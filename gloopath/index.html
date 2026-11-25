@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gloopath: Az hamlede tüm zemini boya</title>
+<meta name="description" content="Gloopath, iPhone ve Android için kaydır ve boya bulmaca oyunu. Paint every tile in few moves.">
+<link rel="canonical" href="https://berkcoo.github.io/get/gloopath/">
+<link rel="icon" href="icon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Gloopath">
+<meta property="og:description" content="Az hamlede tüm zemini boya. Paint every tile in few moves.">
+<meta property="og:url" content="https://berkcoo.github.io/get/gloopath/">
+<meta property="og:image" content="https://berkcoo.github.io/get/gloopath/share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#150256">
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #fff;
+    background: radial-gradient(120% 80% at 50% 0%, #1b6fe0 0%, #1a2fb0 38%, #150256 78%) no-repeat #150256;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: max(24px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+    text-align: center;
+  }
+  main { width: 100%; max-width: 420px; }
+  .icon { width: 128px; height: 128px; border-radius: 29px; box-shadow: 0 14px 40px rgba(0,0,20,.45); }
+  h1 { font-size: 2.2rem; line-height: 1.1; margin: 22px 0 8px; letter-spacing: .01em; }
+  .tag { font-size: 1.1rem; opacity: .92; margin: 0 0 30px; }
+  .badges { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .badges a { display: inline-block; line-height: 0; border-radius: 10px; }
+  .badges a:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+  .badges img { height: 54px; width: auto; display: block; }
+  .go { min-height: 1.4em; margin: 22px 0 0; font-size: .95rem; opacity: .85; }
+  footer { margin-top: 34px; font-size: .82rem; opacity: .8; line-height: 1.6; }
+  footer a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+  footer p { margin: 4px 0; }
+  @media (min-width: 560px) { .badges { flex-direction: row; justify-content: center; } }
+</style>
+</head>
+<body>
+<main>
+  <img class="icon" src="icon.png" width="128" height="128" alt="Gloopath">
+  <h1>Gloopath</h1>
+  <p class="tag" id="tag">Az hamlede tüm zemini boya</p>
+  <div class="badges">
+    <a id="apple" href="https://apps.apple.com/tr/app/gloopath/id6819402559"><img src="app-store-badge.svg" alt="App Store'dan indirin"></a>
+    <a id="google" href="https://play.google.com/store/apps/details?id=com.berkcoappstudio.gloopath"><img src="google-play-badge.png" alt="Google Play'den alın"></a>
+  </div>
+  <p class="go" id="go" aria-live="polite"></p>
+  <footer>
+    <p id="ads">Reklam içerir (ayrıntı gizlilik politikasında).</p>
+    <p><a id="priv" href="https://berkcoo.github.io/gloopath-privacy/">Gizlilik politikası</a> · <a id="supp" href="https://berkcoo.github.io/gloopath-privacy/support/">Destek</a></p>
+    <p>Berkco App Studio</p>
+  </footer>
+</main>
+<script src="route.js"></script>
+<script>
+(function () {
+  var R = window.GloopathRoute;
+  var q = new URLSearchParams(location.search);
+  var apple = document.getElementById('apple');
+  var google = document.getElementById('google');
+  var go = document.getElementById('go');
+
+  // English text for visitors whose browser language is not Turkish.
+  var lang = (navigator.language || 'tr').toLowerCase();
+  if (lang.indexOf('tr') !== 0) {
+    document.documentElement.lang = 'en';
+    document.title = 'Gloopath: Paint every tile in few moves';
+    document.getElementById('tag').textContent = 'Paint every tile in few moves';
+    document.getElementById('ads').textContent = 'Contains ads (details in the privacy policy).';
+    document.getElementById('priv').textContent = 'Privacy policy';
+    document.getElementById('supp').textContent = 'Support';
+    apple.querySelector('img').alt = 'Download on the App Store';
+    google.querySelector('img').alt = 'Get it on Google Play';
+  }
+
+  // ?s=instagram (or tiktok, youtube ...) tags Play installs in Play Console.
+  var source = R.cleanSource(q.get('s'));
+  google.href = R.playUrl(google.href, source);
+
+  // Phones go straight to their store; desktop sees both badges.
+  // ?stay keeps the page open (for testing).
+  var store = R.pickStore(navigator.userAgent, navigator.maxTouchPoints);
+  if (store && !q.has('stay')) {
+    go.textContent = (document.documentElement.lang === 'en' ? 'Opening the store…' : 'Mağaza açılıyor…');
+    location.replace(store === 'apple' ? apple.href : google.href);
+  }
+})();
+</script>
+</body>
+</html>
